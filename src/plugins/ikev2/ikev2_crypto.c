@@ -255,14 +255,14 @@ v8 *
 ikev2_calc_prf (ikev2_sa_transform_t * tr, v8 * key, v8 * data)
 {
   ikev2_main_per_thread_data_t *ptd = ikev2_get_per_thread_data ();
-  HMAC_CTX *ctx = ptd->hmac_ctx;
+  EVP_MAC_CTX *ctx = ptd->hmac_ctx;
   v8 *prf;
   unsigned int len = 0;
 
   prf = vec_new (u8, tr->key_trunc);
-  HMAC_Init_ex (ctx, key, vec_len (key), tr->md, NULL);
-  HMAC_Update (ctx, data, vec_len (data));
-  HMAC_Final (ctx, prf, &len);
+  EVP_MAC_init (ctx, key, vec_len (key), tr->md, NULL);
+  EVP_MAC_update (ctx, data, vec_len (data));
+  EVP_MAC_final (ctx, prf, &len);
   ASSERT (len == tr->key_trunc);
 
   return prf;
@@ -314,7 +314,7 @@ v8 *
 ikev2_calc_integr (ikev2_sa_transform_t * tr, v8 * key, u8 * data, int len)
 {
   ikev2_main_per_thread_data_t *ptd = ikev2_get_per_thread_data ();
-  HMAC_CTX *ctx = ptd->hmac_ctx;
+  EVP_MAC_CTX *ctx = ptd->hmac_ctx;
   v8 *r;
   unsigned int l;
 
@@ -332,9 +332,9 @@ ikev2_calc_integr (ikev2_sa_transform_t * tr, v8 * key, u8 * data, int len)
     }
 
   /* verify integrity of data */
-  HMAC_Init_ex (ctx, key, vec_len (key), tr->md, NULL);
-  HMAC_Update (ctx, (const u8 *) data, len);
-  HMAC_Final (ctx, r, &l);
+  EVP_MAC_init (ctx, key, vec_len (key), tr->md, NULL);
+  EVP_MAC_update (ctx, (const u8 *) data, len);
+  EVP_MAC_final (ctx, r, &l);
   ASSERT (l == tr->key_len);
 
   return r;
