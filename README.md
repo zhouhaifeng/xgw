@@ -71,5 +71,8 @@ vpp-agent v3.3.0
     2. 
        cd vpp-agent
        make
- 
+ 4: scripts
+    from flexiwan
+
+    
 
