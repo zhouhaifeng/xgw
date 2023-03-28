@@ -498,7 +498,7 @@ void
 ikev2_generate_dh (ikev2_sa_t * sa, ikev2_sa_transform_t * t)
 {
   int r;
-
+#if 0
   if (t->dh_group == IKEV2_DH_GROUP_MODP)
     {
       DH *dh = DH_new ();
@@ -640,13 +640,14 @@ ikev2_generate_dh (ikev2_sa_t * sa, ikev2_sa_transform_t * t)
       EC_POINT_free (i_point);
       EC_POINT_free (shared_point);
     }
+#endif
 }
 
 void
 ikev2_complete_dh (ikev2_sa_t * sa, ikev2_sa_transform_t * t)
 {
   int r;
-
+#if 0
   if (t->dh_group == IKEV2_DH_GROUP_MODP)
     {
       DH *dh = DH_new ();
@@ -747,6 +748,7 @@ ikev2_complete_dh (ikev2_sa_t * sa, ikev2_sa_transform_t * t)
       EC_POINT_free (r_point);
       EC_POINT_free (shared_point);
     }
+#endif
 }
 
 int
